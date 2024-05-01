@@ -10,11 +10,20 @@ public class Selection {
         List<Candidate> candidates = new ArrayList<>();
         Random rand = new Random();
 
-        while (candidates.size() < k) {
+        // Select k random candidates for the tournament
+        for (int i = 0; i < k; i++) {
             candidates.add(population.get(rand.nextInt(population.size())));
         }
+
+        // Sort candidates by fitness (number of bins, assuming fewer bins is better)
         candidates.sort(Comparator.comparingInt(c -> c.getFitness().size()));
-        return candidates.get(0); // Return the candidate with the smallest fitness value
+
+        // With a certain probability, choose the best candidate; otherwise, choose a random candidate from the tournament
+        if (Math.random() < probability) {
+            return candidates.get(0); // Return the candidate with the smallest fitness value (best candidate)
+        } else {
+            return candidates.get(rand.nextInt(candidates.size())); // Return a random candidate from the tournament
+        }
     }
 
     public static Candidate rouletteWheelSelection(List<Candidate> population) {

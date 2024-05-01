@@ -22,8 +22,11 @@ public class Main {
 //                System.out.println(test.getItems().get(i).getWeight());
             }
 
+            System.out.println("========== Test problem: " + test.getName() + " with capacity: " + test.getCapacity() + " and items: " + test.getItems().size() + " items ==========");
             ga.setup(100, 100, test.getCapacity(), 5, 0.75, 0.8, 0.1, "FF", "TS", false, weights);
             ga.solve();
+
+            System.out.println();
         }
     }
 }

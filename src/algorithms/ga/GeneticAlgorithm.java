@@ -107,6 +107,7 @@ public class GeneticAlgorithm {
             System.out.print(String.join(", ", itemSizes));
             System.out.println("]");
         }
+
         System.out.println("Population size: " + populationSize);
         System.out.println("Execution time: " + calculateExecutionTime());
         System.out.println("Best length: " + bestSolution.getFitness().size());
