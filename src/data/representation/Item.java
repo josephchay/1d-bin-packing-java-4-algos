@@ -1,27 +1,27 @@
 package data.representation;
 
 public class Item {
+    int id;
     int weight;
-    int count;
 
-    public Item(int weight, int count) {
+    public Item(int id, int weight) {
+        this.id = id;
         this.weight = weight;
-        this.count = count;
     }
 
     @Override
     public String toString() {
         return "Item{" +
+                "id=" + id +
                 "weight=" + weight +
-                ", count=" + count +
                 '}';
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getWeight() {
         return weight;
-    }
-
-    public int getCount() {
-        return count;
     }
 }

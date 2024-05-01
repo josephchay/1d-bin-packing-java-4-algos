@@ -41,7 +41,10 @@ public class FilesystemReader {
                         if (parts.length > 1) {
                             int weight = Integer.parseInt(parts[0]);
                             int count = Integer.parseInt(parts[1]);
-                            currentTest.addItem(new Item(weight, count));
+
+                            for (int i = 0; i < count; i++) {
+                                currentTest.addItem(new Item(i, weight));
+                            }
                         } else {
                             System.out.println("Skipping malformed line: " + line);
                         }
