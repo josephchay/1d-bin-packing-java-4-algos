@@ -90,21 +90,21 @@ public class GeneticAlgorithm {
 
     private void printBestSolutionBins(Candidate bestSolution) {
         System.out.println("Best solution uses " + bestSolution.getFitness().size() + " bins");
-        int binNumber = 1;
-        for (Bin bin : bestSolution.getFitness()) {
-            System.out.print("Bin " + binNumber++ + " contains items: [");
-            List<String> itemSizes = new ArrayList<>();
-            for (Item item : bin.getItems()) {
-                itemSizes.add(String.valueOf(item.getWeight()));
-            }
-            System.out.print(String.join(", ", itemSizes));
-            System.out.println("]");
-            // print the remaining space left for eahc bin
-            System.out.println("Remaining space: " + bin.getRemainingCapacity());
-        }
-
-        System.out.println("Population size: " + populationSize);
-        System.out.println("Best length: " + bestSolution.getFitness().size());
+//        int binNumber = 1;
+//        for (Bin bin : bestSolution.getFitness()) {
+//            System.out.print("Bin " + binNumber++ + " contains items: [");
+//            List<String> itemSizes = new ArrayList<>();
+//            for (Item item : bin.getItems()) {
+//                itemSizes.add(String.valueOf(item.getWeight()));
+//            }
+//            System.out.print(String.join(", ", itemSizes));
+//            System.out.println("]");
+//            // print the remaining space left for eahc bin
+//            System.out.println("Remaining space: " + bin.getRemainingCapacity());
+//        }
+//
+//        System.out.println("Population size: " + populationSize);
+//        System.out.println("Best length: " + bestSolution.getFitness().size());
 //        System.out.println("Solution: " + formatSolution(bestSolution));
     }
 
