@@ -2,11 +2,14 @@ package algorithms.nf;
 
 import data.representation.Bin;
 import data.representation.Item;
+import interfaces.Heuristics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NextFit {
+public class NextFit implements Heuristics {
+    private Bin lastBin = null;
+
     public static List<Bin> pack(List<Item> items, List<Bin> currentBins, int capacity) {
         List<Bin> bins = new ArrayList<>(currentBins);
         if (bins.isEmpty()) {
@@ -28,6 +31,14 @@ public class NextFit {
 //        printDetails(bins);
 
         return bins;
+    }
+
+    public void apply(Item item, List<Bin> bins, int binCapacity) {
+        if (lastBin == null || !lastBin.canAddItem(item)) {
+            lastBin = new Bin(binCapacity);
+            bins.add(lastBin);
+        }
+        lastBin.addItem(item);
     }
 
     private static void printDetails(List<Bin> bins) {

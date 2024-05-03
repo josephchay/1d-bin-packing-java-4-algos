@@ -2,11 +2,12 @@ package algorithms.ff;
 
 import data.representation.Bin;
 import data.representation.Item;
+import interfaces.Heuristics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstFit {
+public class FirstFit implements Heuristics {
     public static List<Bin> pack(List<Item> items, List<Bin> currentBins, int capacity) {
         List<Bin> bins = new ArrayList<>(currentBins);
 
@@ -34,6 +35,18 @@ public class FirstFit {
 //        printDetails(bins);
 
         return bins;
+    }
+
+    public void apply(Item item, List<Bin> bins, int binCapacity) {
+        for (Bin bin : bins) {
+            if (bin.canAddItem(item)) {
+                bin.addItem(item);
+                return;
+            }
+        }
+        Bin newBin = new Bin(binCapacity);
+        newBin.addItem(item);
+        bins.add(newBin);
     }
 
     private static void printDetails(List<Bin> bins) {

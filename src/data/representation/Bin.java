@@ -73,6 +73,10 @@ public class Bin {
         return this.items;
     }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     @Override
     public String toString() {
         StringBuilder itemsString = new StringBuilder("[");

@@ -19,6 +19,9 @@ public class GeneticAlgorithm {
     private boolean allowDuplicateParents;
     private List<Item> items;
 
+    private static long startTime;
+    private static long endTime;
+
     private GeneticAlgorithm() {
         // Private constructor to prevent instantiation
     }
@@ -48,6 +51,8 @@ public class GeneticAlgorithm {
     }
 
     public void solve() {
+        this.startTime = System.nanoTime();
+
         List<Candidate> population = PopulationGenerator.generate(items, capacity, populationSize, greedySolver);
         Candidate bestSolution = population.get(0);
 
@@ -85,11 +90,17 @@ public class GeneticAlgorithm {
             }
         }
 
+        this.endTime = System.nanoTime();
+
         printBestSolutionBins(bestSolution);
     }
 
     private void printBestSolutionBins(Candidate bestSolution) {
+        double durationInSeconds = (endTime - startTime) / 1_000_000_000.0; // Convert nanoseconds to seconds
+
         System.out.println("Best solution uses " + bestSolution.getFitness().size() + " bins");
+        System.out.println("Execution Time: " + String.format("%.6f seconds", durationInSeconds) + "\n");
+
 //        int binNumber = 1;
 //        for (Bin bin : bestSolution.getFitness()) {
 //            System.out.print("Bin " + binNumber++ + " contains items: [");

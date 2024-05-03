@@ -2,11 +2,12 @@ package algorithms.bf;
 
 import data.representation.Bin;
 import data.representation.Item;
+import interfaces.Heuristics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BestFit {
+public class BestFit implements Heuristics {
     public static List<Bin> pack(List<Item> items, List<Bin> currentBins, int capacity) {
         List<Bin> bins = new ArrayList<>(currentBins);
         if (bins.isEmpty()) {
@@ -45,6 +46,24 @@ public class BestFit {
         return bins;
     }
 
+    public void apply(Item item, List<Bin> bins, int binCapacity) {
+        Bin bestBin = null;
+
+        int minSpaceLeft = Integer.MAX_VALUE;
+
+        for (Bin bin : bins) {
+            if (bin.canAddItem(item) && (bin.getRemainingCapacity() - item.getWeight()) < minSpaceLeft) {
+                bestBin = bin;
+                minSpaceLeft = bin.getRemainingCapacity() - item.getWeight();
+            }
+        }
+
+        if (bestBin == null) {
+            bestBin = new Bin(binCapacity);
+            bins.add(bestBin);
+        }
+        bestBin.addItem(item);
+    }
 
     private static void printDetails(List<Bin> bins) {
         System.out.println("Number of bins used: " + bins.size());

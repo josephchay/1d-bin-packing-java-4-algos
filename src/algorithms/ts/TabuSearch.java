@@ -1,7 +1,12 @@
 package algorithms.ts;
 
+import algorithms.bf.BestFit;
+import algorithms.ff.FirstFit;
+import algorithms.nf.NextFit;
+import algorithms.wf.WorstFit;
 import data.representation.Bin;
 import data.representation.Item;
+import interfaces.Heuristics;
 
 import java.util.*;
 
@@ -16,6 +21,9 @@ public class TabuSearch {
     private Set<String> tabuList;
     private static final List<MoveOperator> movers = List.of(new Add(), new Change(), new Remove(), new Swap());
 
+    private static long startTime;
+    private static long endTime;
+
     public TabuSearch(int capacity, List<Integer> items, int maxCombinationLength, int maxIterations, int maxNoChange) {
         this.binCapacity = capacity;
         this.items = new ArrayList<>();
@@ -26,10 +34,14 @@ public class TabuSearch {
         this.bins = new ArrayList<>();
         this.bins.add(new Bin(capacity));
         this.tabuList = new HashSet<>();
+        this.maxCombinationLength = maxCombinationLength;
+        this.maxIterations = maxIterations;
+        this.maxNoChange = maxNoChange;
     }
 
     public void run() {
-        Random random = new Random();
+        this.startTime = System.nanoTime();
+
         String combination = generateRandomCombination();
         bins = generateSolution(combination);
         fitness = calculateFitness(bins);
@@ -58,6 +70,8 @@ public class TabuSearch {
             }
         }
 
+        this.endTime = System.nanoTime();
+
         System.out.printf("Iterations: %d, No change count: %d, Final pattern: %s%n", currentIteration, numNoChange, combination);
         displayResults(bins);
     }
@@ -73,9 +87,12 @@ public class TabuSearch {
         return sb.toString();
     }
 
-
     public void displayResults(List<Bin> bins) {
+        double durationInSeconds = (endTime - startTime) / 1_000_000_000.0; // Convert nanoseconds to seconds
+
         System.out.println("Number of bins: " + bins.size());
+        System.out.println("Execution Time: " + String.format("%.6f seconds", durationInSeconds) + "\n");
+
 //        System.out.println("Bins content: ");
 //        bins.forEach(bin -> {
 //            System.out.print("[");
@@ -96,9 +113,10 @@ public class TabuSearch {
         if (pattern.isEmpty()) {
             throw new IllegalStateException("Pattern must not be empty.");
         }
+
         List<Bin> solution = new ArrayList<>();
         solution.add(new Bin(binCapacity));
-        Map<Character, Heuristic> heuristicMap = new HashMap<>();
+        Map<Character, Heuristics> heuristicMap = new HashMap<>();
         heuristicMap.put('f', new FirstFit());
         heuristicMap.put('n', new NextFit());
         heuristicMap.put('w', new WorstFit());
@@ -107,8 +125,21 @@ public class TabuSearch {
         int patternLength = pattern.length();
         for (int i = 0; i < items.size(); i++) {
             char heuristicKey = pattern.charAt(i % patternLength);
-            Heuristic heuristic = heuristicMap.get(heuristicKey);
-            heuristic.apply(items.get(i), solution, binCapacity);
+            Heuristics heuristic = heuristicMap.get(heuristicKey);
+
+            if (heuristic instanceof FirstFit) {
+                FirstFit firstFit = (FirstFit) heuristic;
+                firstFit.apply(items.get(i), solution, binCapacity);
+            } else if (heuristic instanceof NextFit) {
+                NextFit nextFit = (NextFit) heuristic;
+                nextFit.apply(items.get(i), solution, binCapacity);
+            } else if (heuristic instanceof WorstFit) {
+                WorstFit worstFit = (WorstFit) heuristic;
+                worstFit.apply(items.get(i), solution, binCapacity);
+            } else if (heuristic instanceof BestFit) {
+                BestFit bestFit = (BestFit) heuristic;
+                bestFit.apply(items.get(i), solution, binCapacity);
+            }
         }
         return solution;
     }
