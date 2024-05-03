@@ -18,9 +18,6 @@ public class GeneticAlgorithm {
     private String selectionMethod;
     private boolean allowDuplicateParents;
     private List<Item> items;
-    private long startTime;
-    private long endTime;
-
 
     private GeneticAlgorithm() {
         // Private constructor to prevent instantiation
@@ -51,8 +48,6 @@ public class GeneticAlgorithm {
     }
 
     public void solve() {
-        startTime = System.nanoTime();  // Start timing
-
         List<Candidate> population = PopulationGenerator.generate(items, capacity, populationSize, greedySolver);
         Candidate bestSolution = population.get(0);
 
@@ -90,13 +85,11 @@ public class GeneticAlgorithm {
             }
         }
 
-        endTime = System.nanoTime();  // End timing
-
         printBestSolutionBins(bestSolution);
     }
 
     private void printBestSolutionBins(Candidate bestSolution) {
-        System.out.println("Best solution uses " + bestSolution.getFitness().size() + " bins:");
+        System.out.println("Best solution uses " + bestSolution.getFitness().size() + " bins");
         int binNumber = 1;
         for (Bin bin : bestSolution.getFitness()) {
             System.out.print("Bin " + binNumber++ + " contains items: [");
@@ -106,18 +99,13 @@ public class GeneticAlgorithm {
             }
             System.out.print(String.join(", ", itemSizes));
             System.out.println("]");
+            // print the remaining space left for eahc bin
+            System.out.println("Remaining space: " + bin.getRemainingCapacity());
         }
 
         System.out.println("Population size: " + populationSize);
-        System.out.println("Execution time: " + calculateExecutionTime());
         System.out.println("Best length: " + bestSolution.getFitness().size());
-        System.out.println("Solution: " + formatSolution(bestSolution));
-    }
-
-    private String calculateExecutionTime() {
-        // Calculate the difference in nanoseconds, then convert to seconds
-        double durationInSeconds = (endTime - startTime) / 1_000_000_000.0; // Convert nanoseconds to seconds
-        return String.format("%.6f seconds", durationInSeconds); // Format to 6 decimal places
+//        System.out.println("Solution: " + formatSolution(bestSolution));
     }
 
     private String formatSolution(Candidate bestSolution) {
@@ -175,4 +163,3 @@ public class GeneticAlgorithm {
         candidate.setFitness(Fitness.calculate(items, capacity, greedySolver));
     }
 }
-

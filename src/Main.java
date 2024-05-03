@@ -1,5 +1,5 @@
-
 import algorithms.ga.GeneticAlgorithm;
+import algorithms.ts.TabuSearch;
 import data.representation.TestProblem;
 
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ public class Main {
         GeneticAlgorithm ga = GeneticAlgorithm.getInstance();
 
         for (TestProblem test : testProblems) {
+            long startTime;
+            long endTime;
             List<Integer> weights = new ArrayList<>();
 
             for (int i = 0; i < test.getItems().size(); i++) {
@@ -23,10 +25,19 @@ public class Main {
             }
 
             System.out.println("========== Test problem: " + test.getName() + " with capacity: " + test.getCapacity() + " and items: " + test.getItems().size() + " items ==========");
-            ga.setup(100, 100, test.getCapacity(), 5, 0.75, 0.8, 0.1, "FF", "TS", false, weights);
-            ga.solve();
 
-            System.out.println();
+            startTime = System.nanoTime();  // Start timing
+
+//            ga.setup(500, 50, test.getCapacity(),2, 0.8, 0.5, 0.5, "FF", "TS", false, weights);
+//            ga.solve();
+
+            TabuSearch ts = new TabuSearch(test.getCapacity(), weights, 15, 2000, 500);
+            ts.run();
+
+            endTime = System.nanoTime();  // End timing
+
+            double durationInSeconds = (endTime - startTime) / 1_000_000_000.0; // Convert nanoseconds to seconds
+            System.out.println("Execution Time: " + String.format("%.6f seconds", durationInSeconds) + "\n");
         }
     }
 }

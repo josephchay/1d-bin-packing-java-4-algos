@@ -10,6 +10,7 @@ public class Bin {
     private int freeSpace;
     private List<Item> items;
     private int usedSpace;
+    private int currentLoad;
 
     public Bin(int capacity) {
         this.id = nextId++;
@@ -20,9 +21,12 @@ public class Bin {
     }
 
     public void addItem(Item item) {
-        this.items.add(item);
-        this.freeSpace -= item.getWeight();
-        this.usedSpace += item.getWeight();
+        if (canAddItem(item)) {
+            this.items.add(item);
+            this.freeSpace -= item.getWeight();
+            this.usedSpace += item.getWeight();
+            currentLoad += item.getWeight();
+        }
     }
 
     public void removeItem(int itemIndex) {
@@ -30,6 +34,23 @@ public class Bin {
         this.items.remove(itemIndex);
         this.freeSpace += itemToRemove.getWeight();
         this.usedSpace -= itemToRemove.getWeight();
+    }
+
+    public boolean canAddItem(Item item) {
+        return currentLoad + item.getWeight() <= capacity;
+    }
+
+    public int filledSpace() {
+        return items.stream().mapToInt(Item::getWeight).sum();
+    }
+
+    public int getRemainingCapacity() {
+        return capacity - currentLoad;
+    }
+
+    public double getFitness() {
+        double fillRatio = (double) filledSpace() / capacity;
+        return Math.pow(fillRatio, 2); // Squaring the fill ratio to emphasize higher fill rates
     }
 
     public boolean fits(Item item) {
