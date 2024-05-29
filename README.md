@@ -16,7 +16,7 @@ The conference paper for this project can be found [here](https://github.com/jos
 The conference paper demonstrates our study on the algorithms implemented to solve the problem with the 
 analysis on the results obtained.
 
-### Installation
+## Installation
 
 1. Clone the repository:
 
