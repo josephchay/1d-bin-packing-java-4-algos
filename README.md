@@ -9,6 +9,13 @@ This project addresses the bin-packing problem using four different algorithms. 
 3. Genetic Algorithm
 4. Simulated Annealing Algorithm
 
+## Conference Paper
+
+The conference paper for this project can be found [here](https://github.com/josephchay/1d-bin-packing-java-4-algos/blob/main/conference-paper.pdf).
+
+The conference paper demonstrates our study on the algorithms implemented to solve the problem with the 
+analysis on the results obtained.
+
 ### Installation
 
 1. Clone the repository:
