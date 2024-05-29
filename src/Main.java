@@ -18,8 +18,6 @@ public class Main {
         GeneticAlgorithm ga = GeneticAlgorithm.getInstance();
 
         for (TestProblem test : testProblems) {
-            long startTime;
-            long endTime;
             List<Integer> weights = new ArrayList<>();
 
             for (int i = 0; i < test.getItems().size(); i++) {
